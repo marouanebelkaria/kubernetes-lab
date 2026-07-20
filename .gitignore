@@ -1,0 +1,28 @@
+# Node.js
+node_modules/
+npm-debug.log*
+.env
+.env.local
+
+# Docker
+*.tar
+
+# Kubernetes
+*.kubeconfig
+kubeconfig
+
+# SECRETS — ne jamais versionner
+cosign.key
+*secret*
+*.key
+*.pem
+*.crt
+
+# Systeme
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

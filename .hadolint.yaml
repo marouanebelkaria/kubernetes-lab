@@ -1,0 +1,6 @@
+failure-threshold: warning
+
+trustedRegistries:
+  - gcr.io
+  - docker.io
+  - registry.k8s.io
