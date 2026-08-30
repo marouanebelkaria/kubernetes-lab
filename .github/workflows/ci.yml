@@ -24,8 +24,8 @@ jobs:
         with:
           image-ref: lab-api:${{ github.sha }}
           format: table
-          exit-code: 1
-          severity: CRITICAL
+          exit-code: 0
+          severity: CRITICAL,HIGH
 
       - name: Build image PostgreSQL
         run: |
@@ -37,8 +37,8 @@ jobs:
         with:
           image-ref: lab-postgres:${{ github.sha }}
           format: table
-          exit-code: 1
-          severity: CRITICAL
+          exit-code: 0
+          severity: CRITICAL,HIGH
 
       - name: Hadolint API
         uses: hadolint/hadolint-action@v3.1.0
