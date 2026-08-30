@@ -1,0 +1,51 @@
+name: CI — Build et Scan Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Build image API
+        run: |
+          cd phase1-docker/app
+          docker build -t lab-api:${{ github.sha }} .
+
+      - name: Scan Trivy API
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lab-api:${{ github.sha }}
+          format: table
+          exit-code: 1
+          severity: CRITICAL
+
+      - name: Build image PostgreSQL
+        run: |
+          cd phase1-docker/postgres
+          docker build -t lab-postgres:${{ github.sha }} .
+
+      - name: Scan Trivy PostgreSQL
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lab-postgres:${{ github.sha }}
+          format: table
+          exit-code: 1
+          severity: CRITICAL
+
+      - name: Hadolint API
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: phase1-docker/app/Dockerfile
+
+      - name: Hadolint PostgreSQL
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: phase1-docker/postgres/Dockerfile

@@ -1,0 +1,26 @@
+services:
+
+  postgres:
+    image: lab-postgres:v1.0.0
+    environment:
+      POSTGRES_PASSWORD: monmotdepasse
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "labuser", "-d", "labdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: lab-api:v1.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST:     postgres
+      DB_PORT:     5432
+      DB_NAME:     labdb
+      DB_USER:     labuser
+      DB_PASSWORD: monmotdepasse
+      NODE_ENV:    production
+    depends_on:
+      postgres:
+        condition: service_healthy
